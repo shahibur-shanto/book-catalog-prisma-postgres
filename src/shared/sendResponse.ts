@@ -12,7 +12,7 @@ type IApiReponse<T> = {
   data?: T | null;
 };
 
-const sendResponse = <T>(res: Response, data: IApiReponse<T>): void => {
+const sendResponse = <T>(res: Response, data: Partial<IApiReponse<T>>): void => {
   const responseData: IApiReponse<T> = {
     statusCode: data.statusCode,
     success: data.success,

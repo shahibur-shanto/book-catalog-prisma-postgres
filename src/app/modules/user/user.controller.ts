@@ -7,11 +7,12 @@ import { UserService } from './user.service';
 
 const insertIntoDB = catchAsync(async (req: Request, res: Response) => {
   const result = await UserService.insertIntoDB(req.body);
+  const {password, ...result1} = result;
   sendResponse<User>(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: 'User Created Successfully',
-    data: result,
+    data: result1,
   });
 });
 

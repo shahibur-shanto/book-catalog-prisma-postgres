@@ -16,18 +16,76 @@ model User {
   name String
   email  String @unique
   password String
+  contactNo String
   role ROLE
   address String
   profileImg String
+  reviewAndRatings ReviewAndRating[]
+
+  @@map("user")
 
 }
 
 model Category{
   id String @id  @default(uuid())
   title String
+  books Book[]
+
+  @@map("category")
+}
+
+model Book {
+  id String @id @default(uuid())
+  title String
+  author String
+  price Float
+  gebre String
+  publicationDate DateTime
+  
+  category Category @relation(fields: [categoryId], references: [id])
+
+categoryId String
+
+reviewAndRatings ReviewAndRating[]
+
+@@map("book")
+
+}
+
+
+model ReviewAndRating{
+id String @id @default(uuid())
+review String
+rating Int
+userId String
+user User @relation(fields: [userId], references: [id])
+
+bookId String
+book Book @relation(fields: [bookId], references: [id])
+
+
+@@map("review_and_rating")
+}
+
+model Order{
+  id String @id @default(uuid())
+  userId String
+  orderBooks Json[]
+  status STATUS @default(pending)
+  createdAt DateTime @default(now())
+
+
+  @@map("order")
+
 }
 
 enum ROLE {
   admin
   customer
+}
+
+enum STATUS {
+  pending
+  shipped
+  delivered
 }

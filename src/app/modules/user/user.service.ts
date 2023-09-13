@@ -10,6 +10,7 @@ const insertIntoDB = async (data: User): Promise<User> => {
 };
 
 
+
 export const UserService = {
     insertIntoDB
 }

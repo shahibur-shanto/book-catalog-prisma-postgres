@@ -1,18 +1,21 @@
 import { Response } from 'express';
 
 type IApiReponse<T> = {
-  statusCode: number;
-  success: boolean;
+  statusCode?: number;
+  success?: boolean;
   message?: string | null;
   meta?: {
     page: number;
     limit: number;
     total: number;
-  };
+  } | null;
   data?: T | null;
 };
 
-const sendResponse = <T>(res: Response, data: Partial<IApiReponse<T>>): void => {
+const sendResponse = <T>(
+  res: Response,
+  data: Partial<IApiReponse<T>>
+): void => {
   const responseData: IApiReponse<T> = {
     statusCode: data.statusCode,
     success: data.success,
@@ -21,7 +24,7 @@ const sendResponse = <T>(res: Response, data: Partial<IApiReponse<T>>): void => 
     data: data.data || null || undefined,
   };
 
-  res.status(data.statusCode).json(responseData);
+  res.status(data.statusCode || 200).json(responseData);
 };
 
 export default sendResponse;

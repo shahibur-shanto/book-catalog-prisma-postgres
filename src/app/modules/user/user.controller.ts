@@ -7,15 +7,65 @@ import { UserService } from './user.service';
 
 const insertIntoDB = catchAsync(async (req: Request, res: Response) => {
   const result = await UserService.insertIntoDB(req.body);
-  const {password, ...result1} = result;
-  sendResponse<User>(res, {
+
+  sendResponse<Partial<User>>(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: 'User Created Successfully',
-    data: result1,
+    data: result,
   });
 });
 
+const getAllUser = catchAsync(async (req: Request, res: Response) => {
+  const result = await UserService.getAllUser();
+
+  // const dataWithoutPassword = result.data.map((user: User | null) => {
+  // const { password, ...userWithoutPassword } = user;
+  // return userWithoutPassword;
+  // });
+
+  sendResponse<User[]>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'User Fetch Successfully',
+    meta: result.meta,
+    data: result.data as User[],
+  });
+});
+
+const getUserById = catchAsync(async (req: Request, res: Response) => {
+  const result = await UserService.getUserById(req.params.id);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'user fetch successfully',
+    data: result,
+  });
+});
+
+const updateUser = catchAsync(async (req: Request, res: Response) => {
+  const result = await UserService.updateUser(req.params.id, req.body);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'user update successfully',
+    data: result,
+  });
+});
+
+const deleteUser = catchAsync(async (req: Request, res: Response) => {
+  const result = await UserService.deleteUser(req.params.id);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'User Deleted Successfully',
+    data: result,
+  });
+});
 export const UserController = {
   insertIntoDB,
+  getAllUser,
+  getUserById,
+  updateUser,
+  deleteUser,
 };

@@ -2,15 +2,18 @@
   "name": "book-catalog-assignment",
   "version": "1.0.0",
   "description": "",
-  "main": "src/server.ts",
+  "main": "src/server.js",
   "scripts": {
-    "start": "ts-node-dev --respawn --transpile-only src/server.ts",
+    "start": "node dist/server.js",
+    "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
     "lint:check": "eslint --ignore-path .eslintignore --ext .js,.ts .",
     "lint:fix": "eslint . --fix",
     "prettier:check": "prettier --ignore-path .gitignore --write \"**/*.+(js|ts|json)\"",
     "prettier:fix": "prettier --write .",
     "lint-prettier": "yarn lint:check && yarn prettier:check",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "postinstall": "prisma generate"
   },
   "author": "Shahibur",
   "license": "ISC",
@@ -42,7 +45,9 @@
     "express": "^4.18.2",
     "http-status": "^1.6.2",
     "jsonwebtoken": "^9.0.0",
+    "mongoose": "^7.5.1",
     "prisma": "^5.2.0",
+    "vercel": "^32.2.3",
     "zod": "^3.21.4"
   }
 }

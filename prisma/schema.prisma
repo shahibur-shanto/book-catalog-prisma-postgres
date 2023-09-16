@@ -8,8 +8,8 @@ generator client {
 datasource db {
   
   provider = "postgresql"
-  // url = env("DATABASE_URL")
-  url      = "postgresql://postgres:gCF459Xz*2.gMFP@db.jucqhnwphitttpxlxpda.supabase.co:5432/postgres"
+  url = env("DATABASE_URL")
+  // url      = "postgresql://postgres:gCF459Xz*2.gMFP@db.jucqhnwphitttpxlxpda.supabase.co:5432/postgres"
 }
 
 
@@ -41,7 +41,7 @@ model Book {
   title String
   author String
   price Float
-  gebre String
+  genre String
   publicationDate DateTime
   
   category Category @relation(fields: [categoryId], references: [id])

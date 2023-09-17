@@ -85,7 +85,7 @@ const bookByCategoryId = async (
 ): Promise<IGenericResponse<Book[]>> => {
   const { page, limit, skip } = paginationHelpers.calculatePagination(options);
   let { totalPage } = paginationHelpers.calculatePagination(options);
-  
+
   const total = await prisma.book.count({
     where: {
       categoryId: {
@@ -114,8 +114,42 @@ const bookByCategoryId = async (
   };
 };
 
+const getSingleBook = async (id: string): Promise<Book | null> => {
+  const result = await prisma.book.findUnique({
+    where: {
+      id,
+    },
+  });
+  return result;
+};
+
+const updateBook = async (
+  id: string,
+  payload: Partial<Book>
+): Promise<Book> => {
+  const result = await prisma.book.update({
+    where: {
+      id,
+    },
+    data: payload,
+  });
+  return result;
+};
+
+const deleteBook = async (id: string): Promise<Book | null> => {
+  const result = await prisma.book.delete({
+    where: {
+      id,
+    },
+  });
+  return result;
+};
+
 export const BookService = {
   insertIntoDB,
   getAllBook,
   bookByCategoryId,
+  getSingleBook,
+  updateBook,
+  deleteBook,
 };

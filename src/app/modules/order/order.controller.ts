@@ -46,6 +46,24 @@ const createOrder = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getAllOrder = catchAsync(async (req: Request, res: Response) => {
+  const token = req.headers.authorization;
+  const decoded = jwt.verify(
+    token as string,
+    config.jwt.secret as Secret
+  ) as JwtPayload;
+
+  
+  const result = await OrderService.getAllOrder(decoded);
+  sendResponse<Order[]>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'All Order Retreive',
+    data: result,
+  });
+});
+
 export const OrderController = {
   createOrder,
+  getAllOrder,
 };

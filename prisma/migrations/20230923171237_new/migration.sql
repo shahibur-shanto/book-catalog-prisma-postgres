@@ -1,14 +1,8 @@
-/*
-  Warnings:
+-- CreateEnum
+CREATE TYPE "ROLE" AS ENUM ('admin', 'customer');
 
-  - You are about to drop the `User` table. If the table is not empty, all the data it contains will be lost.
-
-*/
 -- CreateEnum
 CREATE TYPE "STATUS" AS ENUM ('pending', 'shipped', 'delivered');
-
--- DropTable
-DROP TABLE "User";
 
 -- CreateTable
 CREATE TABLE "user" (
@@ -38,7 +32,7 @@ CREATE TABLE "book" (
     "title" TEXT NOT NULL,
     "author" TEXT NOT NULL,
     "price" DOUBLE PRECISION NOT NULL,
-    "gebre" TEXT NOT NULL,
+    "genre" TEXT NOT NULL,
     "publicationDate" TIMESTAMP(3) NOT NULL,
     "categoryId" TEXT NOT NULL,
 
@@ -78,3 +72,6 @@ ALTER TABLE "review_and_rating" ADD CONSTRAINT "review_and_rating_userId_fkey" F
 
 -- AddForeignKey
 ALTER TABLE "review_and_rating" ADD CONSTRAINT "review_and_rating_bookId_fkey" FOREIGN KEY ("bookId") REFERENCES "book"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "order" ADD CONSTRAINT "order_userId_fkey" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

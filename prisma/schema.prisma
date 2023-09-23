@@ -23,6 +23,7 @@ model User {
   address String
   profileImg String
   reviewAndRatings ReviewAndRating[]
+  orders Order[]
 
   @@map("user")
 
@@ -72,6 +73,8 @@ book Book @relation(fields: [bookId], references: [id])
 model Order{
   id String @id @default(uuid())
   userId String
+  user User @relation(fields: [userId], references: [id])
+  
   orderBooks Json[]
   status STATUS @default(pending)
   createdAt DateTime @default(now())

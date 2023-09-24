@@ -29,4 +29,6 @@ router.delete(
   UserController.deleteUser
 );
 
+router.get('/profile', UserController.userProfile);
+
 export const UserRoutes = router;

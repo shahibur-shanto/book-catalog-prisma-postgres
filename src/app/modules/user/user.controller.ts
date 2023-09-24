@@ -1,6 +1,8 @@
 import { User } from '@prisma/client';
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
+import jwt, { JwtPayload, Secret } from 'jsonwebtoken';
+import config from '../../../config';
 import catchAsync from '../../../shared/catchAsync';
 import sendResponse from '../../../shared/sendResponse';
 import { UserService } from './user.service';
@@ -62,10 +64,29 @@ const deleteUser = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+
+const userProfile = catchAsync(async (req: Request, res: Response) => {
+  const token = req.headers.authorization;
+  const decoded = jwt.verify(
+    token as string,
+    config.jwt.secret as Secret
+  ) as JwtPayload;
+
+  const id = decoded.id;
+  const result = await UserService.userProfile(id);
+  sendResponse<User>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'User Retreive Successfully',
+    data: result,
+  });
+});
+
 export const UserController = {
   insertIntoDB,
   getAllUser,
   getUserById,
   updateUser,
   deleteUser,
+  userProfile,
 };

@@ -6,7 +6,7 @@ import jwt, { JwtPayload, Secret } from 'jsonwebtoken';
 import config from '../../../config';
 import catchAsync from '../../../shared/catchAsync';
 import sendResponse from '../../../shared/sendResponse';
-import { IOrder } from './order.interface';
+import { IOrder, IOrderById } from './order.interface';
 import { OrderService } from './order.service';
 // import { JwtPayload, Secret } from 'jsonwebtoken';
 // import { jwtHelpers } from '../../../helpers/jwtHelpers';
@@ -53,7 +53,6 @@ const getAllOrder = catchAsync(async (req: Request, res: Response) => {
     config.jwt.secret as Secret
   ) as JwtPayload;
 
-  
   const result = await OrderService.getAllOrder(decoded);
   sendResponse<Order[]>(res, {
     statusCode: httpStatus.OK,
@@ -63,7 +62,29 @@ const getAllOrder = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getOrderById = catchAsync(async (req: Request, res: Response) => {
+  const token = req.headers.authorization;
+  const decoded = jwt.verify(
+    token as string,
+    config.jwt.secret as Secret
+  ) as JwtPayload;
+  const data: IOrderById = {
+    userId: decoded.id,
+    orderId: req.params.orderId,
+    role: decoded.role,
+  };
+
+  const result = await OrderService.getOrderById(data);
+  sendResponse<Order>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Order Retreive Successfully',
+    data: result,
+  });
+});
+
 export const OrderController = {
   createOrder,
   getAllOrder,
+  getOrderById,
 };

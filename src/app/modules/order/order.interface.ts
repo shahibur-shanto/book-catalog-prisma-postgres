@@ -7,3 +7,9 @@ export type IOrder = {
 
   // role: string;
 };
+
+export type IOrderById = {
+  orderId: string;
+  role: string;
+  userId: string;
+};

@@ -5,7 +5,11 @@ import { OrderController } from './order.controller';
 
 const router = express.Router();
 
-router.post('/orders/create-order', OrderController.createOrder);
+router.post(
+  '/orders/create-order',
+  auth(ENUM_USER_ROLE.CUSTOMER),
+  OrderController.createOrder
+);
 router.get(
   '/orders',
   auth(

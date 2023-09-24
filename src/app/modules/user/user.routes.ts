@@ -29,6 +29,14 @@ router.delete(
   UserController.deleteUser
 );
 
-router.get('/profile', UserController.userProfile);
+router.get(
+  '/profile',
+  auth(
+    ENUM_USER_ROLE.ADMIN,
+    ENUM_USER_ROLE.CUSTOMER,
+    ENUM_USER_ROLE.SUPER_ADMIN
+  ),
+  UserController.userProfile
+);
 
 export const UserRoutes = router;

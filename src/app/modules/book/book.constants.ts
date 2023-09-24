@@ -1,7 +1,7 @@
 export const BookSearchAbleFields = ['title', 'author', 'genre'];
 
 export const BookFilterAbleFileds = [
-  'searchTerm',
+  'search',
   'title',
   'genre',
   'author',

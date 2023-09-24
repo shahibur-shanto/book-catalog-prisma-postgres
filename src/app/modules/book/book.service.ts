@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Book, Prisma, PrismaClient } from '@prisma/client';
 import { paginationHelpers } from '../../../helpers/paginationHelper';
 import { IGenericResponse } from '../../../interfaces/common';
@@ -23,15 +24,15 @@ const getAllBook = async (
 ): Promise<IGenericResponse<Book[]>> => {
   const { page, limit, skip } = paginationHelpers.calculatePagination(options);
   let { totalPage } = paginationHelpers.calculatePagination(options);
-  const { searchTerm, ...filterData } = filters;
+  const { search, minPrice, maxPrice, ...filterData } = filters;
 
   const andConditons = [];
 
-  if (searchTerm) {
+  if (search) {
     andConditons.push({
       OR: BookSearchAbleFields.map(field => ({
         [field]: {
-          contains: searchTerm,
+          contains: search,
           mode: 'insensitive',
         },
       })),
@@ -45,6 +46,21 @@ const getAllBook = async (
           equals: (filterData as any)[key],
         },
       })),
+    });
+  }
+  if (minPrice !== undefined) {
+    andConditons.push({
+      price: {
+        gte: parseFloat(minPrice),
+      },
+    });
+  }
+
+  if (maxPrice !== undefined) {
+    andConditons.push({
+      price: {
+        lte: parseFloat(maxPrice),
+      },
     });
   }
 
@@ -66,7 +82,9 @@ const getAllBook = async (
       category: true,
     },
   });
-  const total = await prisma.book.count();
+  const total = await prisma.book.count({
+    where: whereConditons,
+  });
   totalPage = Math.ceil(total / limit);
   return {
     meta: {

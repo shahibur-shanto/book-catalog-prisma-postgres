@@ -78,9 +78,27 @@ const updateUser = (id, payload) => __awaiter(void 0, void 0, void 0, function* 
     });
     return result;
 });
+const deleteUser = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield prisma.user.delete({
+        where: {
+            id,
+        },
+    });
+    return result;
+});
+const userProfile = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield prisma.user.findUnique({
+        where: {
+            id,
+        },
+    });
+    return result;
+});
 exports.UserService = {
     insertIntoDB,
     getAllUser,
     getUserById,
     updateUser,
+    deleteUser,
+    userProfile,
 };

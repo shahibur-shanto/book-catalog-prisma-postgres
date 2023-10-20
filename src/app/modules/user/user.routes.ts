@@ -7,16 +7,6 @@ const router = express.Router();
 
 router.post('/auth/signup', UserController.insertIntoDB);
 
-router.get(
-  '/users',
-  auth(ENUM_USER_ROLE.SUPER_ADMIN, ENUM_USER_ROLE.ADMIN),
-  UserController.getAllUser
-);
-router.get(
-  '/users/:id',
-  auth(ENUM_USER_ROLE.SUPER_ADMIN, ENUM_USER_ROLE.ADMIN),
-  UserController.getUserById
-);
 router.patch(
   '/users/:id',
   auth(ENUM_USER_ROLE.SUPER_ADMIN, ENUM_USER_ROLE.ADMIN),
@@ -28,7 +18,16 @@ router.delete(
   auth(ENUM_USER_ROLE.SUPER_ADMIN, ENUM_USER_ROLE.ADMIN),
   UserController.deleteUser
 );
-
+router.get(
+  '/users/:id',
+  auth(ENUM_USER_ROLE.SUPER_ADMIN, ENUM_USER_ROLE.ADMIN),
+  UserController.getUserById
+);
+router.get(
+  '/users',
+  auth(ENUM_USER_ROLE.SUPER_ADMIN, ENUM_USER_ROLE.ADMIN),
+  UserController.getAllUser
+);
 router.get(
   '/profile',
   auth(
